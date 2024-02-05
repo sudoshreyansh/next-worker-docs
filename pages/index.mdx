@@ -1,11 +1,34 @@
-# Introduction
- 
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+<div className="text-center mt-8 mb-16">
+  # next-worker
+  
+  <div className="mt-2 text-gray-600 text-xl mb-8">
+    Web Workers for Next.js
+  </div>
+</div>
 
-## What is Nextra?
+<div className="max-w-full w-[880px] mx-auto">
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
+```js filename="example.worker.js"
+onmessage = (e) => {
+  postMessage("Hello from World!")
+}
+```
 
-## Documentation
+```js filename="example.jsx"
+import useWorker from 'next-worker';
 
-The documentation is available at [https://nextra.site](https://nextra.site).
+function ExampleComponent() {
+  const { postMessage } = useWorker("example.worker.js", e => console.log(e));
+
+  useEffect(() => {
+    postMessage("Hello world!");
+  }, []);
+
+  return <></>
+}
+```
+
+In this example, the `useWorker` hook takes a `fileName` of the worker and a `listener` function.
+`useWorker` spawns a worker with `fileName`, on mount. Incoming messages are listened through `listener`.
+The hook returns a `postMessage` function to send messages to the spawned worker.
+</div>

@@ -1,0 +1,21 @@
+name: Check PR & Publish
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  checks-publish-pr:
+    name: Check & Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      - run: pnpm install
+      - run: pnpm lint
+      - run: npm install --global vercel
+      - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
