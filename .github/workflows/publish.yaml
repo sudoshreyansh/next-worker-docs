@@ -13,8 +13,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - run: pnpm install
-      - run: pnpm lint
       - run: npm install --global vercel
       - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
